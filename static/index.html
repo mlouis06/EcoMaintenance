@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1, viewport-fit=cover"
+    >
+
+    <meta
+        name="theme-color"
+        content="#100D08"
+    >
+
+    <meta
+        name="description"
+        content="EcoMaintenance multimodal industrial troubleshooting assistant"
+    >
+
+    <title>EcoMaintenance</title>
+
+    <link
+        rel="stylesheet"
+        href="/static/style.css?v=31"
+    >
+</head>
+
+
+<body>
+
+    <!-- exact project color palette -->
+    <div class="palette-strip" aria-hidden="true">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+
+
+    <!-- dark overlay behind mobile source drawer -->
+    <button
+        id="drawer-backdrop"
+        class="drawer-backdrop"
+        type="button"
+        aria-label="Close sources"
+    ></button>
+
+
+    <div class="app-shell">
+
+        <!-- top app bar -->
+        <header class="topbar">
+
+            <div class="brand">
+
+                <div
+                    class="brand-mark"
+                    aria-hidden="true"
+                >
+                    <span class="brand-mark-main">E</span>
+                    <span class="brand-mark-dot"></span>
+                </div>
+
+
+                <div class="brand-copy">
+
+                    <div class="brand-name">
+                        EcoMaintenance
+                    </div>
+
+                    <div class="brand-subtitle">
+                        Industrial troubleshooting intelligence
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <button
+                id="sources-toggle"
+                class="topbar-action"
+                type="button"
+                aria-controls="sources-panel"
+                aria-expanded="false"
+            >
+                <span
+                    class="topbar-action-icon"
+                    aria-hidden="true"
+                >
+                    ▤
+                </span>
+
+                <span>
+                    Sources
+                </span>
+            </button>
+
+        </header>
+
+
+        <div class="workspace">
+
+
+            <!-- ===================================== -->
+            <!-- SOURCES / KNOWLEDGE BASE              -->
+            <!-- ===================================== -->
+
+            <aside
+                id="sources-panel"
+                class="sidebar"
+                aria-label="Technical sources"
+            >
+
+                <div class="sidebar-mobile-head">
+
+                    <div>
+
+                        <p class="eyebrow">
+                            Knowledge base
+                        </p>
+
+                        <h2>
+                            Technical sources
+                        </h2>
+
+                    </div>
+
+
+                    <button
+                        id="drawer-close"
+                        class="icon-button mobile-only"
+                        type="button"
+                        aria-label="Close sources"
+                    >
+                        ×
+                    </button>
+
+                </div>
+
+
+                <p class="sidebar-copy">
+                    Manuals are searched together automatically.
+                    Select drawings or images when they should be
+                    considered with your question.
+                </p>
+
+
+                <!-- uploads -->
+                <div class="upload-grid">
+
+                    <button
+                        id="upload-manual-button"
+                        class="upload-button"
+                        type="button"
+                    >
+
+                        <span
+                            class="upload-icon"
+                            aria-hidden="true"
+                        >
+                            ↑
+                        </span>
+
+
+                        <span>
+
+                            <strong>
+                                Add manuals
+                            </strong>
+
+                            <small>
+                                PDF, TXT, MD · multiple files
+                            </small>
+
+                        </span>
+
+                    </button>
+
+
+                    <button
+                        id="upload-drawing-button"
+                        class="upload-button secondary"
+                        type="button"
+                    >
+
+                        <span
+                            class="upload-icon"
+                            aria-hidden="true"
+                        >
+                            ⌁
+                        </span>
+
+
+                        <span>
+
+                            <strong>
+                                Add drawings & images
+                            </strong>
+
+                            <small>
+                                PDF, PNG, JPG, WEBP · multiple files
+                            </small>
+
+                        </span>
+
+                    </button>
+
+                </div>
+
+
+                <input
+                    id="manual-file-input"
+                    type="file"
+                    accept=".pdf,.txt,.md"
+                    multiple
+                    hidden
+                >
+
+
+                <input
+                    id="drawing-file-input"
+                    type="file"
+                    accept=".pdf,.png,.jpg,.jpeg,.webp"
+                    multiple
+                    hidden
+                >
+
+
+                <div
+                    id="upload-status"
+                    class="upload-status"
+                    aria-live="polite"
+                ></div>
+
+
+                <!-- uploaded manuals -->
+                <section class="document-section">
+
+                    <div class="section-title-row">
+
+                        <div>
+
+                            <p class="section-kicker">
+                                Automatic retrieval
+                            </p>
+
+                            <h3>
+                                Manuals
+                            </h3>
+
+                        </div>
+
+
+                        <div class="section-actions">
+
+                            <span
+                                id="manual-count"
+                                class="count-badge"
+                            >
+                                0
+                            </span>
+
+
+                            <button
+                                id="refresh-documents"
+                                class="icon-button"
+                                type="button"
+                                title="Refresh sources"
+                                aria-label="Refresh sources"
+                            >
+                                ↻
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        id="manual-list"
+                        class="document-list"
+                    ></div>
+
+                </section>
+
+
+                <!-- uploaded drawings/images -->
+                <section class="document-section">
+
+                    <div class="section-title-row">
+
+                        <div>
+
+                            <p class="section-kicker">
+                                Optional visual context
+                            </p>
+
+                            <h3>
+                                Drawings & images
+                            </h3>
+
+                        </div>
+
+
+                        <span
+                            id="drawing-count"
+                            class="count-badge"
+                        >
+                            0
+                        </span>
+
+                    </div>
+
+
+                    <div
+                        id="drawing-list"
+                        class="document-list"
+                    ></div>
+
+                </section>
+
+            </aside>
+
+
+            <!-- ===================================== -->
+            <!-- CHAT                                  -->
+            <!-- ===================================== -->
+
+            <main class="chat-panel">
+
+                <div
+                    id="chat-scroll"
+                    class="chat-scroll"
+                >
+
+
+                    <!-- welcome screen -->
+                    <section
+                        id="welcome-state"
+                        class="welcome-state"
+                    >
+
+                        <div class="welcome-badge">
+                            Grounded multimodal maintenance assistant
+                        </div>
+
+
+                        <h1>
+                            Ask a technical question.<br>
+                            Get the evidence with it.
+                        </h1>
+
+
+                        <p>
+                            EcoMaintenance searches your manuals together,
+                            interprets selected drawings and images, and
+                            returns concise troubleshooting guidance backed
+                            by source evidence.
+                        </p>
+
+
+                        <div
+                            class="capability-row"
+                            aria-label="Capabilities"
+                        >
+
+                            <span>Manuals</span>
+                            <span>Drawings</span>
+                            <span>Images</span>
+                            <span>Citations</span>
+
+                        </div>
+
+                    </section>
+
+
+                    <!-- actual conversation gets inserted here -->
+                    <section
+                        id="conversation"
+                        class="conversation"
+                        aria-live="polite"
+                    ></section>
+
+                </div>
+
+
+                <!-- selected drawing attachments -->
+                <div class="composer-wrap">
+
+                    <div
+                        id="attachment-bar"
+                        class="attachment-bar hidden"
+                    >
+
+                        <div class="attachment-header">
+
+                            <span>
+                                Visuals included with this question
+                            </span>
+
+
+                            <button
+                                id="clear-drawings"
+                                class="text-button"
+                                type="button"
+                            >
+                                Clear
+                            </button>
+
+                        </div>
+
+
+                        <div
+                            id="attachment-list"
+                            class="attachment-list"
+                        ></div>
+
+                    </div>
+
+
+                    <!-- message composer -->
+                    <div class="composer">
+
+                        <button
+                            id="composer-sources-button"
+                            class="composer-source-button"
+                            type="button"
+                            aria-label="Open sources"
+                        >
+                            <span aria-hidden="true">
+                                ＋
+                            </span>
+                        </button>
+
+
+                        <textarea
+                            id="question"
+                            rows="1"
+                            placeholder="Describe the symptom, fault, procedure, or drawing question…"
+                            aria-label="Maintenance question"
+                        ></textarea>
+
+
+                        <button
+                            id="send-button"
+                            class="send-button"
+                            type="button"
+                            aria-label="Ask EcoMaintenance"
+                        >
+
+                            <span class="send-label">
+                                Ask
+                            </span>
+
+                            <span aria-hidden="true">
+                                →
+                            </span>
+
+                        </button>
+
+                    </div>
+
+
+                    <div class="composer-footer">
+
+                        <span>
+                            Grounded in your technical sources
+                        </span>
+
+                        <span>
+                            Verify site-specific safety procedures before work
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </main>
+
+        </div>
+
+    </div>
+
+
+    <script src="/static/app.js?v=31"></script>
+
+</body>
+</html>
